@@ -12,6 +12,6 @@ type message struct {
 }
 
 // テーブル名を指定
-func (b Product) TableName() string {
+func (b message) TableName() string {
     return b.Room_name
 }

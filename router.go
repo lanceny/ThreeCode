@@ -17,7 +17,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	// コントローラー
 	indexController "ThreeCode/controller/index"
-	//roomController "ThreeCode/controller/room"
+	roomController "ThreeCode/controller/room"
 )
 
 func main() {
@@ -56,8 +56,6 @@ func serve() {
 		melodyInstance.HandleRequest(c.Writer, c.Request)
 	})
 
-	ginRouter.GET("/generateRN",indexController.GenerateRN)
-
 	// 部屋名(URL)が同じクライアントのみに，送られてきた値を送信する
 	// 部屋名が同じクライアントのみに送りたいので、BroadcastFilterをかけている
 	melodyInstance.HandleMessage(func(s *melody.Session, msg []byte) {
@@ -65,6 +63,16 @@ func serve() {
 			return q.Request.URL.Path == s.Request.URL.Path
 		})
 	})
+
+	ginRouter.GET("/generateRN",indexController.GenerateRN)
+
+	ginRouter.GET("/sendMessageAspiration", roomController.Send_Message_Aspiration)
+
+	ginRouter.GET("/sendMessageLookback", roomController.Send_Message_Lookback)
+
+	ginRouter.GET("/fetchallasp", roomController.Fetch_AllMessage_Aspiration)
+
+	ginRouter.GET("/fetchalllkb", roomController.Fetch_AllMessage_Lookback)
 	
 	// 8080ポートで待ち受ける
   if err := ginRouter.Run(":8080"); err != nil {

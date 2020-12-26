@@ -43,10 +43,16 @@ new Vue({
      */
     // 投稿を送信
     sendMessage: function (flag) {
+      const params = new URLSearchParams();
+      params.append('UserName', "MyID")
+      params.append('Anonymous', 0)
+      params.append('Which', flag)
+      
       if (flag == Aspiration){
         if (this.aspiration == ""){
             return;
         }
+        params.append('Message', this.aspiration)
         // (メッセージ内容, 送信者, 抱負か振り返りか)の形式で送信
         asp = this.aspiration + "," + "MyID" + "," + Aspiration
         websocket.send(asp)
@@ -56,16 +62,35 @@ new Vue({
 
         // 送ったらフォームをクリア 
         this.aspiration = "";
+
+        axios.post('/sendMessageAspiration', params)
+        .then(response =>{
+            if(response.status != 200){
+                throw new Error('レスポンスエラー')
+            }else{
+                this.fetchAllMessageAspiration()
+            }
+        })
       
         // 以下同様
       }else if (flag == Lookback){
         if (this.lookback == ""){
             return;
         }
+        params.append('Message', this.lookback)
         lkb = this.lookback + "," + "MyID" + "," + Lookback;
         websocket.send(lkb)
         // this.pushMessage(this.lookback, "MyID", Lookback)
         this.lookback = "";
+
+        axios.post('/sendMessageLookback', params)
+        .then(response =>{
+            if(response.status != 200){
+                throw new Error('レスポンスエラー')
+            }else{
+                this.fetchAllMessageLookback()
+            }
+        })
       }
     },
 
@@ -93,9 +118,39 @@ new Vue({
       }
       console.log("### Successfully pushed")
     },
+    
+    fetchAllMessageAspiration(){
+        axuis.get('/fetchallasp')
+        .then(response => {
+            if(response.status != 200){
+                throw new Error('レスポンスエラー')
+            }else{
+                var resultAsp = response.data
+                this.aspiration_his = resultAsp
+            }
+        })
+    },
+
+    fetchAllMessageLookback(){
+        axuis.get('/fetchalllkb')
+        .then(response => {
+            if(response.status != 200){
+                throw new Error('レスポンスエラー')
+            }else{
+                var resultLkb = response.data
+                this.aspiration_his = resultLkb
+            }
+        })
+    }
   },
 
+  
+
   mounted: function () {
+    
+    // 履歴を取得
+    
+    
     let self = this;
     // websocketでメッセージが来たら受け取る
     websocket.onmessage = function (event) {

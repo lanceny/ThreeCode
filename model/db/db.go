@@ -6,7 +6,7 @@ import (
 	// GolangのORM
 	"github.com/jinzhu/gorm"
 	// エンティティ(データベースのテーブルの行に対応)
-	// entity "ThreeCode/model/entity"
+	entity "ThreeCode/model/entity"
 )
 
 // DB接続する
