@@ -31,7 +31,7 @@ new Vue({
       delfalg: 0,    // 削除モードかどうか
                          // 自分の投稿のみ表示している状態を削除モードとすれば楽そう
 
-      mesid: []
+      mesid: []     // メッセージID, 削除に必要なのでDBから取得
     };
   },
 
@@ -50,16 +50,24 @@ new Vue({
       document.execCommand("copy");
       document.body.removeChild(textBox);
     },
+
+    /**
+     * 以降の機能全般は, axiosにURLをパスして, 
+     * そのURLに基づいてルータがルーティングしてコントローラを動かす. 
+     * /
+     
     /**
      * テキストフィールドでエンターキーが押された時か送信ボタンが押された時に発生
      */
     // 投稿を送信
     sendMessage: function (flag) {
+      //axiosに渡すパスの整形
       const params = new URLSearchParams();
       params.append('Anonymous', this.anonymousflag)
       params.append('Roomname', location.pathname.replace('/room/', ''))
       params.append('Userid', this.userID)
       
+      // 抱負ならwhichに0を入れて抱負用関数をトリガー
       if (flag == Aspiration){
         if (this.aspiration == ""){
             return;
@@ -67,7 +75,7 @@ new Vue({
         params.append('UserName', this.userNameAsp)
         params.append('Message', this.aspiration)
         params.append('Which', Aspiration)
-        // (メッセージ内容, 送信者, 抱負か振り返りか)の形式で送信
+        // websocketには(メッセージ内容, 送信者, 抱負か振り返りか)の形式で送信
         asp = this.aspiration + "," + "MyID" + "," + Aspiration
         websocket.send(asp)
         
@@ -77,6 +85,7 @@ new Vue({
         // 送ったらフォームをクリア 
         this.aspiration = "";
 
+        // axiosにパスを投げる
         axios.post('/sendMessageAspiration', params)
         .then(response =>{
             if(response.status != 200){
@@ -86,7 +95,7 @@ new Vue({
             }
         })
       
-        // 以下同様
+        // 以下, 反省に関しても同様
       }else if (flag == Lookback){
         if (this.lookback == ""){
             return;
@@ -115,6 +124,8 @@ new Vue({
      * @param {String} message - 追加するメッセージ
      * @param {String} owner - 発言者
      * @param {String} flag - 振り返りか抱負か, 必要に応じてintにします
+     * 
+     * Websocket側でメッセを受け取った時にだけ使ってるけど正直使わなくてもいい
      */
     pushMessage: function (message, owner, flag) {
       console.log(`message = ${message}, owner = ${owner}, flag = ${flag}`);
@@ -135,12 +146,19 @@ new Vue({
       console.log("### Successfully pushed")
     },
     
+    /**
+     * 抱負の全投稿を取得する
+     */
     fetchAllMessageAspiration(){
+        // axiosにパス+ルームIDを投げる(重要)
         axios.get('/fetchallasp/'+location.pathname.replace('/room/', ''))
         .then(response => {
             if(response.status != 200){
                 throw new Error('レスポンスエラー')
             }else{
+
+                // 後述するが, 帰ってくるのはJSONのリストなので, 
+                // 頭悪いけど一個ずつ取得している
                 var resultAsp = response.data
                 for(i=0; i<resultAsp.length; i++){
                     this.aspiration_his.push({
@@ -150,16 +168,12 @@ new Vue({
                     })
                 }
             }
-                /*
-                console.log(resultAsp)
-                resultAsp = JSON.stringify({resultAsp})
-                this.aspiration_his = resultAsp.message
-                console.log(this.aspiration_his)
-                */
         })
-
     },
 
+    /**
+     * 反省の全投稿を取得する ほぼ同上
+     */
     fetchAllMessageLookback(){
         axios.get('/fetchalllkb/'+location.pathname.replace('/room/', ''))
         .then(response => {
@@ -178,9 +192,13 @@ new Vue({
         })
     },
 
-    // 特定のIDの人の投稿のみを表示
+    /**
+     * 特定のIDの人の投稿のみを抽出, 表示する
+     * この状態で投稿がクリックされたら削除するような処理にすることで, 
+     * 自分の投稿のみ削除できるような機能を実装した
+     */
     fetchUser(){
-        // urlにルーム情報+ユーザ情報を載せる
+        // urlにルーム情報+ユーザ情報を載せる ユーザの条件もselectに使いたいので
         axios.get('/fetchuser/'+location.pathname.replace('/room/', '') + "/" + this.userID)
         .then(response => {
             if(response.status != 200){
@@ -191,6 +209,7 @@ new Vue({
                 var result = response.data
                 this.lookback_his = []
                 this.aspiration_his = []
+                // fetchUser()の特徴はここ. 投稿を取得する時についでに投稿のIDも集めてきて格納する
                 for(var i=0; i<result.length; i++){
                     if(result[i].Which == 0){
                         console.log(result[i].Message)
@@ -207,12 +226,15 @@ new Vue({
                         })
                     }
                 }
+                // これが走ったときだけ投稿削除可能フラグを建てる
                 this.delflag = 1;
             }
         })
     },
 
-    // ↑の状態を戻す
+    /**
+     * 自分の投稿のみが表示されている状態を戻す, が実質最新の情報に更新みたいなもの
+     */
     returnFetch(){
         this.lookback_his = []
         this.aspiration_his = []
@@ -221,10 +243,16 @@ new Vue({
         this.delflag = 0;
     },
 
+    /**
+     * 念願の投稿を削除する機構
+     * @param {item} message - 削除したいメッセージ構造体. ただし, ここでいう構造体は
+     * 　　　　　　　　　　　　　　Vue内でのみ定義されているもの(aspiration_his, lookback_his)
+     */
     doDeleteMessage(message){
         // 削除フラグがtrue(自分の投稿のみ表示している状態)なら削除処理を行う
         if(this.delflag){
             // this.askMessageID()
+            // fetchUserで投稿のIDを集めてくる
             this.fetchUser()
             const params = new URLSearchParams();
             params.append('ID', message.mesid)
@@ -234,7 +262,10 @@ new Vue({
                 if(response.status != 200){
                     throw new Error('レスポンスエラー')
                 }else{
-                    // 再表示
+                    // 再表示のためにreturnFetchとかしてたけど, 
+                    // 削除したのが他の人に伝わらない → ページ更新がされなかったので, 
+                    // websocketに空文字列を送ることで疑似ブロードキャスト
+
                     // this.fetchUser()
                     websocket.send("")
                 }
@@ -243,6 +274,9 @@ new Vue({
         }
     },
 
+    /**
+     * 投稿のIDを集める関数だったけどfetchUser()に統合. 
+     */
     /*
     askMessageID(){
         axios.get('/askMID/'+location.pathname.replace('/room/', ''))
@@ -275,9 +309,9 @@ new Vue({
     },
     */
 
-    // 乱数の生成
+    // ユーザIDの生成
     generateID() {
-        // serverに'/generateRN'を呼んでねってリクエスト
+        // 中身はルームID生成と同じ
         axios.get("/generateRN").then((response) => {
           // 応答に不備があったらエラー
           if (response.status != 200) {
@@ -295,23 +329,25 @@ new Vue({
   },
 
   mounted: function () {
-    // 履歴を取得
+    // ページが読み込まれたらその部屋の履歴を取得+自分のIDの生成
     this.fetchAllMessageAspiration()
     this.fetchAllMessageLookback()
     this.generateID()
 
     let self = this;
-    // websocketでメッセージが来たら受け取る
+    // websocketイベントハンドラ
     websocket.onmessage = function (event) {
       console.log("### websocket.onmessage()");
       console.log(event.data)
 
-      // 戻り値チェック
+      // 戻り値チェック 中身があるなら通常通り
       if (event && event.data) {
         // 受信したメッセージを履歴に追加
         // ,でsplitしてpushMessageに渡せるように
         var receive = (event.data.split(','));
         self.pushMessage(receive[0], receive[1], receive[2]);
+      
+      //中身がないなら全体に更新を促す疑似ブロードキャスト
       }else if(event.data == ""){
         self.returnFetch()
       }

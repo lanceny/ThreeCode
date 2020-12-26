@@ -26,7 +26,7 @@
     <div id="app">
       <main class="container">
         <div class="heading">
-          <h1 class="title">ルーム</h1>
+          <h1 class="title">自分の投稿→削除したいメッセージをクリックで削除します</h1>
           <!-- GinがRoom_Nameを埋め込んでHTMLを返してくれる -->
           <div class="sub-title">RoomId: {{.Room_Name}}</div>
           <button class="button" v-on:click="CopyURL">ルームURLをコピー</button>
@@ -50,7 +50,7 @@
               ></textarea>
               <div class="comment-button">
                 <button class="button" v-on:click="returnFetch()">
-                  送信する
+                  元に戻す
                 </button>
               </div>
             </div>
@@ -77,7 +77,7 @@
               ></textarea>
               <div class="comment-button">
                 <button class="button" v-on:click="fetchUser()">
-                  送信する
+                  自分の投稿だけ見る
                 </button>
               </div>
             </div>

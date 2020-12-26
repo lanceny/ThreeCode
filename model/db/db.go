@@ -85,7 +85,7 @@ func Send_Message(registerMessage *entity.Message, rmnm string){
 }
 
 
-//指定されたメッセージを削除，メッセージを送信したユーザと削除するユーザが一致していれば削除
+//指定されたメッセージを削除. IDで指定
 func DeleteMessage(ID int, rmnm string){
 	message := []entity.Message{}
 	db := open(rmnm)
@@ -95,6 +95,7 @@ func DeleteMessage(ID int, rmnm string){
 	defer db.Close()
 }
 
+// 抱負も反省も問わず全メッセージを取得する関数だけど今は多分使ってない
 func FindWholeMessage(rmnm string)[]entity.Message{
 	message := []entity.Message{}
 

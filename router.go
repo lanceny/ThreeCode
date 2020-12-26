@@ -64,6 +64,7 @@ func serve() {
 		})
 	})
 
+	// 各種URL→コントローラへのルーティング
 	ginRouter.GET("/generateRN",indexController.GenerateRN)
 
 	ginRouter.POST("/sendMessageAspiration", roomController.Send_Message_Aspiration)

@@ -24,6 +24,11 @@ const (
     LookBack = 1
 )
 
+/**
+* routerに渡すパスに引数として持ってきたいものを含める(c.Param("roomid")など)ことで
+* データベース問題を解決
+*/
+
 // 全ての抱負のメッセージを取得
 func Fetch_AllMessage_Aspiration(c *gin.Context) {
     roomname := c.Param("roomid")
@@ -107,6 +112,7 @@ func DeleteMessage(c *gin.Context){
     db.DeleteMessage(messageID, roomname)
 }
 
+// MessageIDの取得用関数だったけど多分使ってない
 func AskMessageID(c *gin.Context){
     roomname := c.Param("roomid")
     resultMessage := db.FindWholeMessage(roomname)
