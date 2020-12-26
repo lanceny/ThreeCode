@@ -3,7 +3,8 @@ const websocketURL =
 // websocketをインスタンス化
 const websocket = new WebSocket(websocketURL);
 
-const Aspiration = 0;
+// 振り返りと抱負の識別子
+const Aspiration = 0; 
 const Lookback   = 1;
 
 new Vue({
@@ -46,15 +47,24 @@ new Vue({
         if (this.aspiration == ""){
             return;
         }
-        websocket.send(this.aspiration, Aspiration)
-        this.pushMessage(this.aspiration, "MyID", Aspiration)
+        // (メッセージ内容, 送信者, 抱負か振り返りか)の形式で送信
+        asp = this.aspiration + "," + "MyID" + "," + Aspiration
+        websocket.send(asp)
+        
+        // 自分のと送信して戻ってきたので2つ表示されたのでとりあえずコメントアウト中
+        // this.pushMessage(this.aspiration, "MyID", Aspiration)
+
+        // 送ったらフォームをクリア 
         this.aspiration = "";
+      
+        // 以下同様
       }else if (flag == Lookback){
         if (this.lookback == ""){
             return;
         }
-        websocket.send(this.lookback, Lookback)
-        this.pushMessage(this.lookback, "MyID", Lookback)
+        lkb = this.lookback + "," + "MyID" + "," + Lookback;
+        websocket.send(lkb)
+        // this.pushMessage(this.lookback, "MyID", Lookback)
         this.lookback = "";
       }
     },
@@ -63,10 +73,12 @@ new Vue({
      * リストにメッセージを追加する
      * @param {String} message - 追加するメッセージ
      * @param {String} owner - 発言者
+     * @param {String} flag - 振り返りか抱負か, 必要に応じてintにします
      */
     pushMessage: function (message, owner, flag) {
       console.log(`message = ${message}, owner = ${owner}, flag = ${flag}`);
       if(flag == Aspiration){
+          // 履歴リストにpush
           this.aspiration_his.push({
               aspiration: message,
               owner: owner,
@@ -79,6 +91,7 @@ new Vue({
               flag: flag
           })
       }
+      console.log("### Successfully pushed")
     },
   },
 
@@ -87,11 +100,14 @@ new Vue({
     // websocketでメッセージが来たら受け取る
     websocket.onmessage = function (event) {
       console.log("### websocket.onmessage()");
+      console.log(event.data)
 
       // 戻り値チェック
       if (event && event.data) {
-        // 受信したメッセージを表示する
-        self.pushMessage(event.data);
+        // 受信したメッセージを履歴に追加
+        // ,でsplitしてpushMessageに渡せるように
+        var receive = (event.data.split(','));
+        self.pushMessage(receive[0], receive[1], receive[2]);
       }
     };
   },
