@@ -20,6 +20,13 @@ new Vue({
 
       lookback: "",
       lookback_his: [],   // 送受信した反省の履歴
+
+      userNameAsp: "匿名",
+      userNameLkb: "匿名",
+
+      anonymousflag: 0,
+
+      userID: "",
     };
   },
 
@@ -44,14 +51,15 @@ new Vue({
     // 投稿を送信
     sendMessage: function (flag) {
       const params = new URLSearchParams();
-      params.append('UserName', "MyID")
-      params.append('Anonymous', 0)
+      params.append('Anonymous', this.anonymousflag)
       params.append('Roomname', location.pathname.replace('/room/', ''))
+      params.append('Userid', this.userID)
       
       if (flag == Aspiration){
         if (this.aspiration == ""){
             return;
         }
+        params.append('UserName', this.userNameAsp)
         params.append('Message', this.aspiration)
         params.append('Which', Aspiration)
         // (メッセージ内容, 送信者, 抱負か振り返りか)の形式で送信
@@ -78,6 +86,7 @@ new Vue({
         if (this.lookback == ""){
             return;
         }
+        params.append('UserName', this.userNameLkb)
         params.append('Message', this.lookback)
         params.append('Which', Lookback)
         lkb = this.lookback + "," + "MyID" + "," + Lookback;
@@ -162,15 +171,68 @@ new Vue({
                 }
             }
         })
-    }
-  },
+    },
 
+    // 特定のIDの人の投稿のみを表示
+    fetchUser(){
+        axios.get('/fetchuser/'+location.pathname.replace('/room/', '') + "/" + this.userID)
+        .then(response => {
+            if(response.status != 200){
+                throw new Error('レスポンスエラー')
+            }else{
+                var result = response.data
+                this.lookback_his = []
+                this.aspiration_his = []
+                for(var i=0; i<result.length; i++){
+                    if(result[i].Which == 0){
+                        console.log(result[i].Message)
+                        this.aspiration_his.push({
+                            aspiration: result[i].Message,
+                            owner: result[i].User
+                        })
+                    }else if (result[i].Which == 1){
+                        this.lookback_his.push({
+                            lookback: result[i].Message,
+                            owner: result[i].User
+                        })
+                    }
+                }
+            }
+        })
+    },
+
+    // ↑の状態を戻す
+    returnFetch(){
+        this.lookback_his = []
+        this.aspiration_his = []
+        this.fetchAllMessageAspiration()
+        this.fetchAllMessageLookback()
+    },
+
+    // 乱数の生成
+    generateID() {
+        // serverに'/generateRN'を呼んでねってリクエスト
+        axios.get("/generateRN").then((response) => {
+          // 応答に不備があったらエラー
+          if (response.status != 200) {
+            throw new Error("Response Error");
+          } else {
+            // controllerから帰ってきた乱数を取得
+            var randomnumber = response.data;
   
+            // 帰ってきた乱数を遷移するURLに設定
+            this.userID = randomnumber;
+          }
+        });
+    }
+
+  },
 
   mounted: function () {
     // 履歴を取得
     this.fetchAllMessageAspiration()
     this.fetchAllMessageLookback()
+    this.generateID()
 
     let self = this;
     // websocketでメッセージが来たら受け取る

@@ -9,6 +9,7 @@ type Message struct {
     Anonymous 	int    `gorm:"not null"                   	                json:"anonymous"`
     Which       int    `gorm:"not null"                   	                json:"which"`
     Roomname   string `gorm:"type:varchar(100);                            json:"room_name"`
+    Userid     string `gorm:"type:varchar(100);                             json:"userid"`
 }
 
 // テーブル名を指定

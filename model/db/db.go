@@ -59,6 +59,23 @@ func FindAllMessage(which int, rmnm string)[]entity.Message{
 	return message
 }
 
+//指定されたテーブル名のメッセージを取得．whichで抱負か振り返りかを判断
+func FindUsersMessage(rmnm string, usid string)[]entity.Message{
+	message := []entity.Message{}
+
+	db := open(rmnm)
+
+	//SQL文
+	//SELECT User,Message,Anonymous FROM table_name WHERE Which=which ORDER BY ID;
+	//db.Table(rmnm).Select("User,Message,Anonymous").Where("Which = ?",which).Order("ID asc").Find(&message)
+	db.Table(rmnm).Where("userid = ?",usid).Order("ID asc").Find(&message)
+
+	defer db.Close()
+
+	fmt.Print(message)
+	return message
+}
+
 
 //抱負,振り返りを追加する
 func Send_Message(registerMessage *entity.Message, rmnm string){

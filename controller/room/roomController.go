@@ -51,6 +51,7 @@ func Send_Message_Aspiration(c *gin.Context){
     roomname := c.PostForm("Roomname")
     whichstr := c.PostForm("Which")
     which, _ := strconv.Atoi(whichstr)
+    userid := c.PostForm("Userid")
 
     var room = entity.Message{
         User:       UserName,
@@ -58,6 +59,7 @@ func Send_Message_Aspiration(c *gin.Context){
         Anonymous:  Anonymous,
         Which:      which,
         Roomname:   roomname,
+        Userid:     userid,
     }
 
     db.Send_Message(&room, roomname)
@@ -72,6 +74,8 @@ func Send_Message_Lookback(c *gin.Context){
     roomname := c.PostForm("Roomname")
     whichstr := c.PostForm("Which")
     which, _ := strconv.Atoi(whichstr)
+    userid := c.PostForm("Userid")
+
 
     var room = entity.Message{
         User:       UserName,
@@ -79,7 +83,18 @@ func Send_Message_Lookback(c *gin.Context){
         Anonymous:  Anonymous,
         Which:      which,
         Roomname:   roomname,
+        Userid:     userid,
     }
 
     db.Send_Message(&room, roomname)
+}
+
+// UerIDの一致する投稿の取得
+func Fetch_SameID(c *gin.Context) {
+    roomname := c.Param("roomid")
+    userid   := c.Param("userid")
+    resultMessage := db.FindUsersMessage(roomname, userid)
+
+    // URLへのアクセスに対してJSONを返す
+    c.JSON(200, resultMessage)
 }
