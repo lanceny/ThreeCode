@@ -6,6 +6,8 @@ import (
 
 	// 乱数生成用パッケージ
 	"math/rand"
+	// フォーマットI/O
+	"fmt"
 	// エラー処理
 )
 
@@ -15,9 +17,9 @@ const (
 )
 
 // generateRN: 乱数生成
-func generateRN(c *gin.Context) {
+func GenerateRN(c *gin.Context) {
 	var letters = []rune("abcdefghijklmnopqrstuwvxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-
+	
 	// 乱数を生成
 	b := make([]rune, 10)
 	for i := range b {
@@ -26,6 +28,6 @@ func generateRN(c *gin.Context) {
 	// lettersからランダムに取り出して文字列を生成
 	var resultNum string
 	resultNum = string(b)
-
+	fmt.Println("generateRN",resultNum)
 	c.JSON(200, resultNum)
 }
