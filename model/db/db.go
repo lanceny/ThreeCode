@@ -10,7 +10,7 @@ import (
 )
 
 // DB接続する
-func open() *gorm.DB {
+func open(table_name string) *gorm.DB {
 	DBMS := "mysql"
     USER := "threecode"
     PASS := "3cvol5"
@@ -33,8 +33,8 @@ func open() *gorm.DB {
     db.SingularTable(true)
 
 	// マイグレーション(DBに保存されているデータを保持したまま、テーブルの作成やカラムの変更などを行う)
-	// テーブルが無い時は自動生成
-    // db.AutoMigrate(&entity.Product{})
+	// テーブルが無い時は自動生成,テーブル名=部屋名(自動生成した文字列)
+    db.AutoMigrate(&entity.message{Room_name: table_name})
 
 	// データベースに接続できたことを示す
 	fmt.Println("db connected: ", &db)
@@ -42,25 +42,32 @@ func open() *gorm.DB {
     return db
 }
 
+//指定されたテーブル名のメッセージを取得．whichで抱負か振り返りかを判断
+func FindAllMessage(which int, table_name string)[]entity.message{
+	message := []entity.message{}
 
-// 抱負側の処理
-//抱負を追加する
-func Send_Message_Aspiration(user string, Message string, Anonymous bool, table_name string){
+	db := open(table_name)
 
+	//SQL文
+	//SELECT User,Message,Anonymous FROM table_name WHERE Which=which ORDER BY ID;
+	db.Select("User,Message,Anonymous").Where("Which = ?",which).Order("ID asc").Find(&message)
+
+	defer db.Close()
+	return message
 }
 
+
+//抱負,振り返りを追加する
+func Send_Message(registerMessage *entity.message, table_name string){
+	db := open(table_name)
+	db.Create(&registerMessage)
+	defer db.Close()
+}
+
+
+/*
 //指定されたメッセージを削除，メッセージを送信したユーザと削除するユーザが一致していれば削除
-func Delete_Message_Aspiration(message_ID int, user string, table_name string){
-
+func Delete_Message(message_ID int, user string, table_name string){
+	
 }
-
-// 振り返り側の処理
-//振り返りを追加する
-func Send_Message_Aspiration_LookBack(user string, Message string, Anonymous bool, table_name string){
-
-}
-
-//指定されたメッセージを削除，メッセージを送信したユーザと削除するユーザが一致していれば削除
-func Delete_Message_LookBack(message_ID int, user string, table_name string){
-
-}
+*/

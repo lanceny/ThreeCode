@@ -17,21 +17,21 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	// コントローラー
 	indexController "ThreeCode/controller/index"
-	//roomController "ThreeCode/controller"
+	//roomController "ThreeCode/controller/room"
 )
 
 func main() {
-    // サーバーを起動する
-    serve()
+  // サーバーを起動する
+  serve()
 }
 
 func serve() {
-    // デフォルトのミドルウェアでginのルーターを作成
-    // Logger と アプリケーションクラッシュをキャッチするRecoveryミドルウェア を保有しています
+  // デフォルトのミドルウェアでginのルーターを作成
+  // Logger と アプリケーションクラッシュをキャッチするRecoveryミドルウェア を保有しています
 	ginRouter := gin.Default()
 	melodyInstance := melody.New()
 
-    // 静的ファイルのパスを指定
+  // 静的ファイルのパスを指定
 	ginRouter.Static("/view", "./view")
 	
 	// HTML読み込み,これによりテンプレートを使用できる
@@ -67,7 +67,7 @@ func serve() {
 	})
 	
 	// 8080ポートで待ち受ける
-    if err := ginRouter.Run(":8080"); err != nil {
-        log.Fatal("Server Run Failed.: ", err)
-    }
+  if err := ginRouter.Run(":8080"); err != nil {
+     log.Fatal("Server Run Failed.: ", err)
+  }
 }
