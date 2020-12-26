@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ThreeeCode</title>
     <!-- スタイルシート -->
-    <link rel="stylesheet" type="text/css" href="./css/style.css" />
-    <link rel="stylesheet" type="text/css" href="./css/index.css" />
+    <link rel="stylesheet" type="text/css" href="/view/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/view/css/index.css" />
     <!-- フォント -->
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -20,7 +20,7 @@
     ></script>
     <!-- axios：HTTP通信を超簡単に行うことができるJavaScriptライブラリ -->
     <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
-    <script src="./js/indexVue.js" defer></script>
+    <script src="/view/js/indexVue.js" defer></script>
   </head>
   <body>
     <div id="app">
@@ -29,7 +29,7 @@
           <h1 class="title">ThreeeCode</h1>
           <h2 class="sub-title">年末年始のオンライン通話に楽しさを</h2>
         </div>
-        <button class="button" v-on:click="">ルームを作る</button>
+        <button class="button" v-on:click="generateRN()">ルームを作る</button>
       </main>
     </div>
   </body>
