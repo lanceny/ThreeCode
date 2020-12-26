@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ThreeeCode</title>
+    <link rel="icon" type="image/x-icon" href="/view/favicon.svg" />
     <!-- スタイルシート -->
     <link rel="stylesheet" type="text/css" href="/view/css/style.css" />
     <link rel="stylesheet" type="text/css" href="/view/css/index.css" />
@@ -24,13 +25,33 @@
   </head>
   <body>
     <div id="app">
-      <main class="container">
-        <div class="heading">
-          <h1 class="title">ThreeeCode</h1>
-          <h2 class="sub-title">年末年始のオンライン通話に楽しさを</h2>
-        </div>
-        <button class="button" v-on:click="generateRN()">ルームを作る</button>
+      <main class="container fade">
+        <section class="top-heading">
+          <div class="top-heading__hero"></div>
+          <div class="top-heading__wrapper">
+            <h1 class="top-heading__title">ThreeeCode</h1>
+            <h2 class="top-heading__sub-title">
+              年末年始のオンライン通話に楽しさを
+            </h2>
+            <a class="button" v-on:click="generateRN()">ルームを作る</a>
+          </div>
+        </section>
+        <section class="top-about">
+          <h2 class="top-about__title">オンライン通話のレクリエーションに</h2>
+          <div class="top-about__body">
+            <ol class="top-about__steps">
+              <li class="top-about__step">
+                今年の振り返り・新年の抱負を書き込もう！
+              </li>
+              <li class="top-about__step">
+                ボードを見ながら、上から誰の反省・抱負かを話して盛り上がろう！
+              </li>
+            </ol>
+            <img class="top-about__img" src="/view/images/houhu.jpg" alt="" />
+          </div>
+        </section>
       </main>
+      <footer class="footer"><span>©︎ Three Code</span></footer>
     </div>
   </body>
 </html>
