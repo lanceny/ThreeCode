@@ -20,9 +20,9 @@ new Vue({
 
           // 帰ってきた乱数を遷移するURLに設定
           this.currentPage = randomnumber;
+          window.location = "/room/" + this.currentPage;
         }
       });
-      window.location = "/room/" + this.currentPage;
     },
   },
 });
