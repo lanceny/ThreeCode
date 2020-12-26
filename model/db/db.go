@@ -50,9 +50,12 @@ func FindAllMessage(which int, rmnm string)[]entity.Message{
 
 	//SQL文
 	//SELECT User,Message,Anonymous FROM table_name WHERE Which=which ORDER BY ID;
-	db.Select("User,Message,Anonymous").Where("Which = ?",which).Order("ID asc").Find(&message)
+	//db.Table(rmnm).Select("User,Message,Anonymous").Where("Which = ?",which).Order("ID asc").Find(&message)
+	db.Table(rmnm).Where("Which = ?",which).Order("ID asc").Find(&message)
 
 	defer db.Close()
+
+	fmt.Print(message)
 	return message
 }
 

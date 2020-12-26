@@ -70,9 +70,11 @@ func serve() {
 
 	ginRouter.POST("/sendMessageLookback", roomController.Send_Message_Lookback)
 
-	ginRouter.GET("/fetchallasp", roomController.Fetch_AllMessage_Aspiration)
+	ginRouter.GET("/fetchallasp/:roomid", roomController.Fetch_AllMessage_Aspiration)
 
-	ginRouter.GET("/fetchalllkb", roomController.Fetch_AllMessage_Lookback)
+	ginRouter.GET("/fetchalllkb/:roomid", roomController.Fetch_AllMessage_Lookback)
+
+	// ginRouter.POST("/fetchrmnm", roomController.Fetch_roomname)
 	
 	// 8080ポートで待ち受ける
   if err := ginRouter.Run(":8080"); err != nil {

@@ -12,6 +12,8 @@ import (
 
     // DBアクセス用モジュール
     db "ThreeCode/model/db"
+
+    //"fmt"
 )
 
 const (
@@ -24,8 +26,8 @@ const (
 
 // 全ての抱負のメッセージを取得
 func Fetch_AllMessage_Aspiration(c *gin.Context) {
-    room_name := c.PostForm("Roomname")
-    resultMessage := db.FindAllMessage(Aspiration, room_name)
+    roomname := c.Param("roomid")
+    resultMessage := db.FindAllMessage(Aspiration, roomname)
 
     // URLへのアクセスに対してJSONを返す
     c.JSON(200, resultMessage)
@@ -33,8 +35,8 @@ func Fetch_AllMessage_Aspiration(c *gin.Context) {
 
 // 全ての振り返りのメッセージを取得
 func Fetch_AllMessage_Lookback(c *gin.Context) {
-    room_name := c.PostForm("Roomname")
-    resultMessage := db.FindAllMessage(LookBack, room_name)
+    roomname := c.Param("roomid")
+    resultMessage := db.FindAllMessage(LookBack, roomname)
     
     // URLへのアクセスに対してJSONを返す
     c.JSON(200, resultMessage)
@@ -47,7 +49,7 @@ func Send_Message_Aspiration(c *gin.Context){
     Anonymousstr := c.PostForm("Anonymous")
     Anonymous, _ := strconv.Atoi(Anonymousstr)
     roomname := c.PostForm("Roomname")
-    whichstr := c.PostForm("Aspiration")
+    whichstr := c.PostForm("Which")
     which, _ := strconv.Atoi(whichstr)
 
     var room = entity.Message{
@@ -68,7 +70,7 @@ func Send_Message_Lookback(c *gin.Context){
     Anonymousstr := c.PostForm("Anonymous")
     Anonymous, _ := strconv.Atoi(Anonymousstr)
     roomname := c.PostForm("Roomname")
-    whichstr := c.PostForm("Lookback")
+    whichstr := c.PostForm("Which")
     which, _ := strconv.Atoi(whichstr)
 
     var room = entity.Message{

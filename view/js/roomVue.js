@@ -46,7 +46,6 @@ new Vue({
       const params = new URLSearchParams();
       params.append('UserName', "MyID")
       params.append('Anonymous', 0)
-      params.append('Which', flag)
       params.append('Roomname', location.pathname.replace('/room/', ''))
       
       if (flag == Aspiration){
@@ -54,6 +53,7 @@ new Vue({
             return;
         }
         params.append('Message', this.aspiration)
+        params.append('Which', Aspiration)
         // (メッセージ内容, 送信者, 抱負か振り返りか)の形式で送信
         asp = this.aspiration + "," + "MyID" + "," + Aspiration
         websocket.send(asp)
@@ -69,7 +69,7 @@ new Vue({
             if(response.status != 200){
                 throw new Error('レスポンスエラー')
             }else{
-                this.fetchAllMessageAspiration()
+                // this.fetchAllMessageAspiration()
             }
         })
       
@@ -79,6 +79,7 @@ new Vue({
             return;
         }
         params.append('Message', this.lookback)
+        params.append('Which', Lookback)
         lkb = this.lookback + "," + "MyID" + "," + Lookback;
         websocket.send(lkb)
         // this.pushMessage(this.lookback, "MyID", Lookback)
@@ -89,7 +90,7 @@ new Vue({
             if(response.status != 200){
                 throw new Error('レスポンスエラー')
             }else{
-                this.fetchAllMessageLookback()
+                // this.fetchAllMessageLookback()
             }
         })
       }
@@ -121,25 +122,44 @@ new Vue({
     },
     
     fetchAllMessageAspiration(){
-        axios.get('/fetchallasp')
+        axios.get('/fetchallasp/'+location.pathname.replace('/room/', ''))
         .then(response => {
             if(response.status != 200){
                 throw new Error('レスポンスエラー')
             }else{
                 var resultAsp = response.data
-                this.aspiration_his = resultAsp
+                for(i=0; i<resultAsp.length; i++){
+                    this.aspiration_his.push({
+                        aspiration: resultAsp[i].Message,
+                        owner: resultAsp[i].User,
+                        // flag: resultAsp[i].Which
+                    })
+                }
             }
+                /*
+                console.log(resultAsp)
+                resultAsp = JSON.stringify({resultAsp})
+                this.aspiration_his = resultAsp.message
+                console.log(this.aspiration_his)
+                */
         })
+
     },
 
     fetchAllMessageLookback(){
-        axios.get('/fetchalllkb')
+        axios.get('/fetchalllkb/'+location.pathname.replace('/room/', ''))
         .then(response => {
             if(response.status != 200){
                 throw new Error('レスポンスエラー')
             }else{
                 var resultLkb = response.data
-                this.aspiration_his = resultLkb
+                for(i=0; i<resultLkb.length; i++){
+                    this.lookback_his.push({
+                        lookback: resultLkb[i].Message,
+                        owner: resultLkb[i].User,
+                        // flag: resultLkb[i].Which
+                    })
+                }
             }
         })
     }
@@ -149,8 +169,8 @@ new Vue({
 
   mounted: function () {
     // 履歴を取得
-    this.fetchAllMessageLookback()
     this.fetchAllMessageAspiration()
+    this.fetchAllMessageLookback()
 
     let self = this;
     // websocketでメッセージが来たら受け取る
