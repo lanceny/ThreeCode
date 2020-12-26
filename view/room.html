@@ -35,11 +35,7 @@
           <section class="comment-section">
             <div class="comment-board">
               <ul>
-                <li
-                  class="box"
-                  v-for="(item, index) in messages"
-                  v-bind:key="index"
-                >
+                <li v-for="(item, index) in messages" v-bind:key="index">
                   <p v-text="item.message"></p>
                 </li>
               </ul>
@@ -50,10 +46,12 @@
                 type="text"
                 v-model="message"
                 placeholder="メッセージを入力"
-                @keyup.enter="keypress"
+                @keyup.enter="sendMessage"
               ></textarea>
               <div class="comment-button">
-                <button class="button" v-on:click="keypress">送信する</button>
+                <button class="button" v-on:click="sendMessage">
+                  送信する
+                </button>
               </div>
             </div>
           </section>
@@ -75,10 +73,12 @@
                 type="text"
                 v-model="message"
                 placeholder="メッセージを入力"
-                @keyup.enter="keypress"
+                @keyup.enter="sendMessage"
               ></textarea>
               <div class="comment-button">
-                <button class="button" v-on:click="keypress">送信する</button>
+                <button class="button" v-on:click="sendMessage">
+                  送信する
+                </button>
               </div>
             </div>
           </section>

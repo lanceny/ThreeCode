@@ -9,7 +9,7 @@ new Vue({
 
   data: function () {
     return {
-      currentURL: location.href,
+      currentURL: location.href, // URLを格納
       message: "", // 入力したメッセージを格納する
       messages: [], // 送受信したメッセージを格納する
     };
@@ -17,6 +17,9 @@ new Vue({
 
   methods: {
     CopyURL() {
+      // textBoxを作成. コンテンツに取得したURLをいれる
+      // textBoxの内容を選択してコピーすることで
+      // クリップボードにコピーしている
       const textBox = document.createElement("textarea");
       textBox.setAttribute("id", "target");
       textBox.setAttribute("type", "hidden");
@@ -28,11 +31,10 @@ new Vue({
       document.body.removeChild(textBox);
     },
     /**
-     * テキストフィールドでエンターキーが押された時に発生
+     * テキストフィールドでエンターキーが押された時か送信ボタンが押された時に発生
      */
-    keypress: function () {
-      console.log("## keypress()");
-
+    // 投稿を送信
+    sendMessage: function () {
       // 未入力だった場合は終了
       if (this.message == "") {
         return;
@@ -44,14 +46,12 @@ new Vue({
     },
 
     /**
-     * メッセージを表示する
-     * @param {String} message - 表示するメッセージ
+     * リストにメッセージを追加する
+     * @param {String} message - 追加するメッセージ
      * @param {String} owner - 発言者
      */
     pushMessage: function (message, owner) {
-      console.log("## pushMessage()");
       console.log(`message = ${message}, owner = ${owner}`);
-
       // メッセージを追加
       this.messages.push({
         message: message,
@@ -62,14 +62,7 @@ new Vue({
 
   mounted: function () {
     let self = this;
-    console.log("## mounted()");
-
-    // websocketをオープンした時
-    websocket.onopen = function (event) {
-      console.log("### websocket.onopen()");
-    };
-
-    // websocketでメッセージを受信した時
+    // websocketでメッセージが来たら受け取る
     websocket.onmessage = function (event) {
       console.log("### websocket.onmessage()");
 
@@ -78,18 +71,6 @@ new Vue({
         // 受信したメッセージを表示する
         self.pushMessage(event.data);
       }
-    };
-
-    // websocketでエラーが発生した時
-    websocket.onerror = function (event) {
-      console.log("### websocket.onerror()");
-      console.log(event);
-    };
-
-    // websocketをクローズした時
-    websocket.onclose = function (event) {
-      console.log("### websocket.onclose()");
-      console.log(event);
     };
   },
 });
