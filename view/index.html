@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ThreeeCode</title>
+    <!-- スタイルシート -->
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link rel="stylesheet" type="text/css" href="./css/index.css" />
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap"
+    />
+    <!-- Vue.js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"
+      defer
+    ></script>
+    <!-- axios：HTTP通信を超簡単に行うことができるJavaScriptライブラリ -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+    <script src="./js/indexVue.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <main class="container">
+        <div class="heading">
+          <h1 class="title">ThreeeCode</h1>
+          <h2 class="sub-title">年末年始のオンライン通話に楽しさを</h2>
+        </div>
+        <button class="button" v-on:click="">ルームを作る</button>
+      </main>
+    </div>
+  </body>
+</html>

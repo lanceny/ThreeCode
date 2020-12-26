@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ルーム - ThreeeCode</title>
+    <!-- スタイルシート -->
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link rel="stylesheet" type="text/css" href="./css/room.css" />
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap"
+    />
+    <!-- Vue.js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"
+      defer
+    ></script>
+    <!-- axios：HTTP通信を超簡単に行うことができるJavaScriptライブラリ -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+    <script src="./js/roomVue.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <main class="container">
+        <div class="heading">
+          <h1 class="title">ルーム</h1>
+        </div>
+        <div class="flex">
+          <section class="comment-section">
+            <div class="comment-board">
+              <p>プログラミングする</p>
+            </div>
+            <div class="comment-box">
+              <textarea
+                class="comment-textarea"
+                type="text"
+                name=""
+                v-model=""
+                value=""
+              ></textarea>
+              <div class="comment-button">
+                <button class="button" v-on:click="">送信する</button>
+              </div>
+            </div>
+          </section>
+          <section class="comment-section">
+            <div class="comment-board">
+              <p>プログラミングする</p>
+            </div>
+            <div class="comment-box">
+              <textarea
+                class="comment-textarea"
+                type="text"
+                name=""
+                v-model=""
+                value=""
+              ></textarea>
+              <div class="comment-button">
+                <button class="button" v-on:click="">送信する</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
