@@ -1,14 +1,13 @@
 package db
 
 import (
-    // フォーマットI/O
-    "fmt"
-    // GolangのORM
-    "github.com/jinzhu/gorm"
-    // エンティティ(データベースのテーブルの行に対応)
-    // entity "ThreeCode/model/entity"
+	// フォーマットI/O
+	"fmt"
+	// GolangのORM
+	"github.com/jinzhu/gorm"
+	// エンティティ(データベースのテーブルの行に対応)
+	// entity "ThreeCode/model/entity"
 )
-
 
 // DB接続する
 func open() *gorm.DB {
