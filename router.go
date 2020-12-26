@@ -17,7 +17,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	// コントローラー
 	indexController "ThreeCode/controller/index"
-	//roomController "ThreeCode/controller"
+	//roomController "ThreeCode/controller/room"
 )
 
 func main() {
@@ -36,7 +36,7 @@ func serve() {
 	
 	// HTML読み込み,これによりテンプレートを使用できる
 	router.LoadHTMLGlob("view/*.html")
-
+	
 	// index.htmlはr.LoadHTMLGlob()でロードされているファイルから読み込む
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{})
@@ -64,7 +64,7 @@ func serve() {
 			return q.Request.URL.Path == s.Request.URL.Path
 		})
 	})
-*/
+	*/
 	
 	// 8080ポートで待ち受ける
     if err := router.Run(":8080"); err != nil {
