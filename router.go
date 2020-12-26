@@ -17,8 +17,8 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	
     // コントローラー
-	indexController "./controller/indexController"
-	roomController "./controller/roomController"
+	//indexController "ThreeCode/controller/index"
+	//roomController "ThreeCode/controller"
 )
 
 func main() {
@@ -57,11 +57,13 @@ func serve() {
 	})
 
 	// 部屋名(URL)が同じクライアントのみに，送られてきた値を送信する
+	/*
 	melody.HandleMessage(func(s *melody.Session, msg []byte) {
 		melody.BroadcastFilter(msg, func(q *melody.Session) bool {
 			return q.Request.URL.Path == s.Request.URL.Path
 		})
 	})
+*/
 	
 	// 8080ポートで待ち受ける
     if err := router.Run(":8080"); err != nil {

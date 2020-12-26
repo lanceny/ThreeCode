@@ -6,8 +6,9 @@ import (
     // GolangのORM
     "github.com/jinzhu/gorm"
     // エンティティ(データベースのテーブルの行に対応)
-    entity "../entity"
+    // entity "ThreeCode/model/entity"
 )
+
 
 // DB接続する
 func open() *gorm.DB {
@@ -34,7 +35,7 @@ func open() *gorm.DB {
 
 	// マイグレーション(DBに保存されているデータを保持したまま、テーブルの作成やカラムの変更などを行う)
 	// テーブルが無い時は自動生成
-    db.AutoMigrate(&entity.Product{})
+    // db.AutoMigrate(&entity.Product{})
 
 	// データベースに接続できたことを示す
 	fmt.Println("db connected: ", &db)

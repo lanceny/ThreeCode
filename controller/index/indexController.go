@@ -2,7 +2,7 @@ package indexcontroller
 
 import (
 	//Gin
-	"github/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 
 	// 乱数生成用パッケージ
 	"math/rand"
