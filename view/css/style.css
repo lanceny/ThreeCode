@@ -1,0 +1,41 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+body {
+  background-color: #f4f4f4;
+  color: #333333;
+}
+
+a {
+  text-decoration: none;
+}
+
+.container {
+  text-align: center;
+  padding: 0 8px;
+}
+
+.heading {
+  margin: 40px 0;
+}
+
+.title {
+  font-size: 40px;
+  margin-bottom: 24px;
+}
+
+.button {
+  font-size: 14px;
+  color: #fff;
+  padding: 8px 16px;
+  background-color: blue;
+  border-radius: 16px;
+}

@@ -1,0 +1,23 @@
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+}
+
+.comment-board {
+  background-color: #fff;
+  width: 100%;
+  min-height: 300px;
+  margin-bottom: 14px;
+  border-radius: 4px;
+}
+
+.comment-textarea {
+  width: 400px;
+  min-height: 100px;
+}
+
+.comment-button {
+  text-align: right;
+}
