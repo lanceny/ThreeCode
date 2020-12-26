@@ -13,6 +13,10 @@
   border-radius: 4px;
 }
 
+.comment-board li {
+  text-decoration: none;
+}
+
 .comment-textarea {
   width: 400px;
   min-height: 100px;
