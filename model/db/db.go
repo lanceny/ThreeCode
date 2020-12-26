@@ -10,7 +10,7 @@ import (
 )
 
 // DB接続する
-func open() *gorm.DB {
+func open(rmnm string) *gorm.DB {
 	DBMS := "mysql"
     USER := "root"
     PASS := "root"
@@ -34,7 +34,7 @@ func open() *gorm.DB {
 
 	// マイグレーション(DBに保存されているデータを保持したまま、テーブルの作成やカラムの変更などを行う)
 	// テーブルが無い時は自動生成,テーブル名=部屋名(自動生成した文字列)
-    db.AutoMigrate(&entity.Message{})
+    db.Table(rmnm).AutoMigrate(&entity.Message{})
 
 	// データベースに接続できたことを示す
 	fmt.Println("db connected: ", &db)
@@ -43,10 +43,10 @@ func open() *gorm.DB {
 }
 
 //指定されたテーブル名のメッセージを取得．whichで抱負か振り返りかを判断
-func FindAllMessage(which int)[]entity.Message{
+func FindAllMessage(which int, rmnm string)[]entity.Message{
 	message := []entity.Message{}
 
-	db := open()
+	db := open(rmnm)
 
 	//SQL文
 	//SELECT User,Message,Anonymous FROM table_name WHERE Which=which ORDER BY ID;
@@ -58,9 +58,9 @@ func FindAllMessage(which int)[]entity.Message{
 
 
 //抱負,振り返りを追加する
-func Send_Message(registerMessage *entity.Message){
-	db := open()
-	db.Create(&registerMessage)
+func Send_Message(registerMessage *entity.Message, rmnm string){
+	db := open(rmnm)
+	db.Table(rmnm).Create(&registerMessage)
 	defer db.Close()
 }
 

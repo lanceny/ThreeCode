@@ -24,8 +24,8 @@ const (
 
 // 全ての抱負のメッセージを取得
 func Fetch_AllMessage_Aspiration(c *gin.Context) {
-    // room_name := c.PostForm("room_name")
-    resultMessage := db.FindAllMessage(Aspiration)
+    room_name := c.PostForm("Roomname")
+    resultMessage := db.FindAllMessage(Aspiration, room_name)
 
     // URLへのアクセスに対してJSONを返す
     c.JSON(200, resultMessage)
@@ -33,8 +33,8 @@ func Fetch_AllMessage_Aspiration(c *gin.Context) {
 
 // 全ての振り返りのメッセージを取得
 func Fetch_AllMessage_Lookback(c *gin.Context) {
-    // room_name := c.PostForm("room_name")
-    resultMessage := db.FindAllMessage(LookBack)
+    room_name := c.PostForm("Roomname")
+    resultMessage := db.FindAllMessage(LookBack, room_name)
     
     // URLへのアクセスに対してJSONを返す
     c.JSON(200, resultMessage)
@@ -58,7 +58,7 @@ func Send_Message_Aspiration(c *gin.Context){
         Roomname:   roomname,
     }
 
-    db.Send_Message(&room)
+    db.Send_Message(&room, roomname)
 }
 
 //振り返りの方のメッセージ送信
@@ -79,5 +79,5 @@ func Send_Message_Lookback(c *gin.Context){
         Roomname:   roomname,
     }
 
-    db.Send_Message(&room)
+    db.Send_Message(&room, roomname)
 }

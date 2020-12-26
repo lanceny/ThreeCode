@@ -121,7 +121,7 @@ new Vue({
     },
     
     fetchAllMessageAspiration(){
-        axuis.get('/fetchallasp')
+        axios.get('/fetchallasp')
         .then(response => {
             if(response.status != 200){
                 throw new Error('レスポンスエラー')
@@ -133,7 +133,7 @@ new Vue({
     },
 
     fetchAllMessageLookback(){
-        axuis.get('/fetchalllkb')
+        axios.get('/fetchalllkb')
         .then(response => {
             if(response.status != 200){
                 throw new Error('レスポンスエラー')
@@ -151,7 +151,7 @@ new Vue({
     // 履歴を取得
     this.fetchAllMessageLookback()
     this.fetchAllMessageAspiration()
-    
+
     let self = this;
     // websocketでメッセージが来たら受け取る
     websocket.onmessage = function (event) {
