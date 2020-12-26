@@ -76,6 +76,10 @@ func serve() {
 
 	ginRouter.GET("/fetchuser/:roomid/:userid", roomController.Fetch_SameID)
 
+	ginRouter.POST("/deleteMessage/:roomid", roomController.DeleteMessage)
+	
+	ginRouter.GET("/askMID/:roomid", roomController.AskMessageID)
+
 	// ginRouter.POST("/fetchrmnm", roomController.Fetch_roomname)
 	
 	// 8080ポートで待ち受ける

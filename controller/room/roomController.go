@@ -98,3 +98,20 @@ func Fetch_SameID(c *gin.Context) {
     // URLへのアクセスに対してJSONを返す
     c.JSON(200, resultMessage)
 }
+
+// 指定された投稿をDelete
+func DeleteMessage(c *gin.Context){
+    roomname := c.Param("roomid")
+    messageIDstr := c.PostForm("ID")
+    messageID, _ := strconv.Atoi(messageIDstr)
+    db.DeleteMessage(messageID, roomname)
+}
+
+func AskMessageID(c *gin.Context){
+    roomname := c.Param("roomid")
+    resultMessage := db.FindWholeMessage(roomname)
+
+    // URLへのアクセスに対してJSONを返す
+    c.JSON(200, resultMessage)
+
+}

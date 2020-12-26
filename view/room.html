@@ -36,7 +36,7 @@
             <div class="comment-board">
               <ul>
                 <li v-for="(item, index) in aspiration_his" v-bind:key="index">
-                  <p v-text="item.aspiration"></p>
+                  <p v-text="item.aspiration" v-on:click="doDeleteMessage(item)"></p>
                 </li>
               </ul>
             </div>
@@ -63,7 +63,7 @@
                   v-for="(item, index) in lookback_his"
                   v-bind:key="index"
                 >
-                  <p v-text="item.lookback"></p>
+                  <p v-text="item.lookback" v-on:click="doDeleteMessage(item)"></p>
                 </li>
               </ul>
             </div>

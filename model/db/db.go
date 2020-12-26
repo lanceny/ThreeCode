@@ -85,9 +85,27 @@ func Send_Message(registerMessage *entity.Message, rmnm string){
 }
 
 
-/*
 //指定されたメッセージを削除，メッセージを送信したユーザと削除するユーザが一致していれば削除
-func Delete_Message(message_ID int, user string, table_name string){
-	
+func DeleteMessage(ID int, rmnm string){
+	message := []entity.Message{}
+	db := open(rmnm)
+
+	//delete
+	db.Table(rmnm).Delete(&message, ID)
+	defer db.Close()
 }
-*/
+
+func FindWholeMessage(rmnm string)[]entity.Message{
+	message := []entity.Message{}
+
+	db := open(rmnm)
+
+	//SQL文
+	//SELECT User,Message,Anonymous FROM table_name WHERE Which=which ORDER BY ID;
+	db.Table(rmnm).Order("ID asc").Find(&message)
+
+	defer db.Close()
+
+	fmt.Print(message)
+	return message
+}

@@ -21,12 +21,17 @@ new Vue({
       lookback: "",
       lookback_his: [],   // 送受信した反省の履歴
 
-      userNameAsp: "匿名",
+      userNameAsp: "匿名", //ユーザ名
       userNameLkb: "匿名",
 
-      anonymousflag: 0,
+      anonymousflag: 0,  // 匿名表示するかどうか
 
-      userID: "",
+      userID: "",        // ユーザ固有のID
+
+      delfalg: 0,    // 削除モードかどうか
+                         // 自分の投稿のみ表示している状態を削除モードとすれば楽そう
+
+      mesid: []
     };
   },
 
@@ -175,7 +180,72 @@ new Vue({
 
     // 特定のIDの人の投稿のみを表示
     fetchUser(){
+        // urlにルーム情報+ユーザ情報を載せる
         axios.get('/fetchuser/'+location.pathname.replace('/room/', '') + "/" + this.userID)
+        .then(response => {
+            if(response.status != 200){
+                throw new Error('レスポンスエラー')
+            }else{
+                // レスポンスはJSONのリスト
+                // 欲しい情報を拾って適宜dataに突っ込む
+                var result = response.data
+                this.lookback_his = []
+                this.aspiration_his = []
+                for(var i=0; i<result.length; i++){
+                    if(result[i].Which == 0){
+                        console.log(result[i].Message)
+                        this.aspiration_his.push({
+                            aspiration: result[i].Message,
+                            owner: result[i].User,
+                            mesid: result[i].ID
+                        })
+                    }else if (result[i].Which == 1){
+                        this.lookback_his.push({
+                            lookback: result[i].Message,
+                            owner: result[i].User,
+                            mesid: result[i].ID
+                        })
+                    }
+                }
+                this.delflag = 1;
+            }
+        })
+    },
+
+    // ↑の状態を戻す
+    returnFetch(){
+        this.lookback_his = []
+        this.aspiration_his = []
+        this.fetchAllMessageAspiration()
+        this.fetchAllMessageLookback()
+        this.delflag = 0;
+    },
+
+    doDeleteMessage(message){
+        // 削除フラグがtrue(自分の投稿のみ表示している状態)なら削除処理を行う
+        if(this.delflag){
+            // this.askMessageID()
+            this.fetchUser()
+            const params = new URLSearchParams();
+            params.append('ID', message.mesid)
+
+            axios.post('/deleteMessage/'+location.pathname.replace('/room/', ''), params)
+            .then(response => {
+                if(response.status != 200){
+                    throw new Error('レスポンスエラー')
+                }else{
+                    // 再表示
+                    // this.fetchUser()
+                    websocket.send("")
+                }
+            })
+        } else {
+        }
+    },
+
+    /*
+    askMessageID(){
+        axios.get('/askMID/'+location.pathname.replace('/room/', ''))
         .then(response => {
             if(response.status != 200){
                 throw new Error('レスポンスエラー')
@@ -188,26 +258,22 @@ new Vue({
                         console.log(result[i].Message)
                         this.aspiration_his.push({
                             aspiration: result[i].Message,
-                            owner: result[i].User
+                            owner: result[i].User,
+                            mesid: result[i].ID,
                         })
                     }else if (result[i].Which == 1){
                         this.lookback_his.push({
                             lookback: result[i].Message,
-                            owner: result[i].User
+                            owner: result[i].User,
+                            mesid: result[i].ID,
                         })
                     }
                 }
             }
         })
-    },
 
-    // ↑の状態を戻す
-    returnFetch(){
-        this.lookback_his = []
-        this.aspiration_his = []
-        this.fetchAllMessageAspiration()
-        this.fetchAllMessageLookback()
     },
+    */
 
     // 乱数の生成
     generateID() {
@@ -246,6 +312,8 @@ new Vue({
         // ,でsplitしてpushMessageに渡せるように
         var receive = (event.data.split(','));
         self.pushMessage(receive[0], receive[1], receive[2]);
+      }else if(event.data == ""){
+        self.returnFetch()
       }
     };
   },
