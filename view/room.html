@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ルーム - ThreeeCode</title>
+    <link rel="icon" type="image/x-icon" href="/view/favicon.svg" />
     <!-- スタイルシート -->
     <link rel="stylesheet" type="text/css" href="/view/css/style.css" />
     <link rel="stylesheet" type="text/css" href="/view/css/room.css" />
@@ -24,66 +25,116 @@
   </head>
   <body>
     <div id="app">
-      <main class="container">
-        <div class="heading">
-          <h1 class="title">ルーム</h1>
-          <!-- GinがRoom_Nameを埋め込んでHTMLを返してくれる -->
-          <div class="sub-title">RoomId: {{.Room_Name}}</div>
-          <button class="button" v-on:click="CopyURL">ルームURLをコピー</button>
-        </div>
-        <div class="flex">
-          <section class="comment-section">
-            <div class="comment-board">
-              <ul>
-                <li v-for="(item, index) in aspiration_his" v-bind:key="index">
-                  <p v-text="item.aspiration"></p>
-                </li>
-              </ul>
+      <main class="container fade">
+        <div class="room-wrapper">
+          <div class="room-heading">
+            <!-- GinがRoom_Nameを埋め込んでHTMLを返してくれる -->
+            <h2 class="room-heading__sub-title">ルームID: {{.Room_Name}}</h2>
+            <a class="button" v-on:click="CopyURL">ルームURLをコピー</a>
+            <div class="room-heading__text">
+              <p>上のボタンを押して、URLを共有しよう！</p>
+              <p>みんなで今年の振り返り・新年の抱負を書き込もう！</p>
+              <p>
+                ボードを見ながら、上から誰の反省・抱負かを話し合って当ててみよう！
+              </p>
             </div>
-            <div class="comment-box">
-              <textarea
-                class="comment-textarea"
-                type="text"
-                v-model="aspiration"
-                placeholder="メッセージを入力"
-                @keyup.enter="sendMessage(0)"
-              ></textarea>
-              <div class="comment-button">
-                <button class="button" v-on:click="sendMessage(0)">
-                  送信する
-                </button>
+          </div>
+          <div class="flex">
+            <section class="comment-section">
+              <div class="comment-header">
+                <h3 class="comment-header__title">今年の振り返り</h3>
               </div>
-            </div>
-          </section>
-          <section class="comment-section">
-            <div class="comment-board">
-              <ul>
-                <li
-                  class="box"
-                  v-for="(item, index) in lookback_his"
-                  v-bind:key="index"
-                >
-                  <p v-text="item.lookback"></p>
-                </li>
-              </ul>
-            </div>
-            <div class="comment-box">
-              <textarea
-                class="comment-textarea"
-                type="text"
-                v-model="lookback"
-                placeholder="メッセージを入力"
-                @keyup.enter="sendMessage(1)"
-              ></textarea>
-              <div class="comment-button">
-                <button class="button" v-on:click="sendMessage(1)">
-                  送信する
-                </button>
+              <div class="comment-board">
+                <ul class="comment-board__list">
+                  <li
+                    v-for="(item, index) in aspiration_his"
+                    v-bind:key="index"
+                    class="comment-board__item"
+                  >
+                    <p v-text="item.aspiration"></p>
+                  </li>
+                </ul>
               </div>
-            </div>
-          </section>
+              <div class="comment-box">
+                <input
+                  class="comment-box__input"
+                  type="text"
+                  placeholder="名前を入力"
+                />
+                <textarea
+                  class="comment-box__textarea"
+                  type="text"
+                  v-model="aspiration"
+                  placeholder="メッセージを入力"
+                  @keyup.enter="sendMessage(0)"
+                ></textarea>
+                <div class="comment-box__buttons">
+                  <label class="comment-box__anonymous-switch" for="switch">
+                    <input
+                      type="checkbox"
+                      class="comment-box__anonymous-switch-input"
+                      id="switch"
+                      v-model="isAnonymous"
+                    />
+                    <span
+                      class="comment-box__anonymous-switch-indicator"
+                    ></span>
+                    匿名投稿
+                  </label>
+                  <a class="button" v-on:click="sendMessage(0)">送信する</a>
+                </div>
+              </div>
+            </section>
+            <section class="comment-section">
+              <div class="comment-header">
+                <h3 class="comment-header__title">新年の抱負</h3>
+              </div>
+              <div class="comment-board">
+                <ul class="comment-board__list">
+                  <li
+                    v-for="(item, index) in lookback_his"
+                    v-bind:key="index"
+                    class="comment-board__item"
+                  >
+                    <p v-text="item.lookback"></p>
+                  </li>
+                </ul>
+              </div>
+              <div class="comment-box">
+                <input
+                  class="comment-box__input"
+                  type="text"
+                  placeholder="名前を入力"
+                />
+                <textarea
+                  class="comment-box__textarea"
+                  type="text"
+                  v-model="lookback"
+                  placeholder="メッセージを入力"
+                  @keyup.enter="sendMessage(1)"
+                ></textarea>
+                <div class="comment-box__buttons">
+                  <label class="comment-box__anonymous-switch" for="switch">
+                    <input
+                      type="checkbox"
+                      class="comment-box__anonymous-switch-input"
+                      id="switch"
+                      v-model="isAnonymous"
+                    />
+                    <span
+                      class="comment-box__anonymous-switch-indicator"
+                    ></span>
+                    匿名投稿
+                  </label>
+                  <a class="button" v-on:click="sendMessage(1)">送信する</a>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
       </main>
+      <footer class="footer"><span>©︎ Three Code</span></footer>
+      <div id="snackBar" v-text="snackBarMsg"></div>
     </div>
   </body>
 </html>
