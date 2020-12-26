@@ -30,8 +30,8 @@
         </div>
         <div class="flex">
           <section class="comment-section">
-            <div class="comment-board">
-              <p>プログラミングする</p>
+            <div class="comment-board" v-for="item in history">
+              <p><span v-text="item.message"></p>
             </div>
             <div class="comment-box">
               <textarea
@@ -54,10 +54,11 @@
                 class="comment-textarea"
                 type="text"
                 name=""
+                v-model="sends"
                 value=""
               ></textarea>
               <div class="comment-button">
-                <button class="button" v-on:click="CopyURL">送信する</button>
+                <button class="button" v-on:click="sendMessage">送信する</button>
               </div>
             </div>
           </section>
