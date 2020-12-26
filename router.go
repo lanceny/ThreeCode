@@ -29,7 +29,7 @@ func serve() {
     // デフォルトのミドルウェアでginのルーターを作成
     // Logger と アプリケーションクラッシュをキャッチするRecoveryミドルウェア を保有しています
 	router := gin.Default()
-	melody := melody.New()
+	m := melody.New()
 
     // 静的ファイルのパスを指定
 	router.Static("/view", "./view")
@@ -52,19 +52,18 @@ func serve() {
 	// /:name/wsにリクエストが来ると，webSocketの通信として、HandleMessageの処理を行う
 	// HandleRequestは、httpリクエストをWebSocket接続にし、melodyインスタンスによって処理されるようにディスパッチする
 	router.GET("room/:name/ws", func(c *gin.Context) {
-		melody.HandleRequest(c.Writer, c.Request)
+		m.HandleRequest(c.Writer, c.Request)
 	})
 
 	router.GET("/generateRN",indexController.GenerateRN)
 
 	// 部屋名(URL)が同じクライアントのみに，送られてきた値を送信する
-	/*
-	melody.HandleMessage(func(s *melody.Session, msg []byte) {
-		melody.BroadcastFilter(msg, func(q *melody.Session) bool {
+	
+	m.HandleMessage(func(s *melody.Session, msg []byte) {
+		m.BroadcastFilter(msg, func(q *melody.Session) bool {
 			return q.Request.URL.Path == s.Request.URL.Path
 		})
 	})
-*/
 	
 	// 8080ポートで待ち受ける
     if err := router.Run(":8080"); err != nil {
