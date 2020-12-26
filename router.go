@@ -16,7 +16,7 @@ import (
 	// MySQL用ドライバ
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	// コントローラー
-	//indexController "ThreeCode/controller/index"
+	indexController "ThreeCode/controller/index"
 	//roomController "ThreeCode/controller"
 )
 
@@ -54,6 +54,8 @@ func serve() {
 	router.GET("room/:name/ws", func(c *gin.Context) {
 		melody.HandleRequest(c.Writer, c.Request)
 	})
+
+	router.GET("/generateRN",indexController.GenerateRN)
 
 	// 部屋名(URL)が同じクライアントのみに，送られてきた値を送信する
 	/*
