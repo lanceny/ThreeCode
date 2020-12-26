@@ -47,6 +47,7 @@ new Vue({
       params.append('UserName', "MyID")
       params.append('Anonymous', 0)
       params.append('Which', flag)
+      params.append('Roomname', location.pathname.replace('/room/', ''))
       
       if (flag == Aspiration){
         if (this.aspiration == ""){
@@ -147,9 +148,9 @@ new Vue({
   
 
   mounted: function () {
-    
     // 履歴を取得
-    
+    this.fetchAllMessageLookback()
+    this.fetchAllMessageAspiration()
     
     let self = this;
     // websocketでメッセージが来たら受け取る

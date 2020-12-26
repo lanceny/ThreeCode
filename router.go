@@ -66,9 +66,9 @@ func serve() {
 
 	ginRouter.GET("/generateRN",indexController.GenerateRN)
 
-	ginRouter.GET("/sendMessageAspiration", roomController.Send_Message_Aspiration)
+	ginRouter.POST("/sendMessageAspiration", roomController.Send_Message_Aspiration)
 
-	ginRouter.GET("/sendMessageLookback", roomController.Send_Message_Lookback)
+	ginRouter.POST("/sendMessageLookback", roomController.Send_Message_Lookback)
 
 	ginRouter.GET("/fetchallasp", roomController.Fetch_AllMessage_Aspiration)
 

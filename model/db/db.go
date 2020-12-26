@@ -10,10 +10,10 @@ import (
 )
 
 // DB接続する
-func open(table_name string) *gorm.DB {
+func open() *gorm.DB {
 	DBMS := "mysql"
-    USER := "threecode"
-    PASS := "3cvol5"
+    USER := "root"
+    PASS := "root"
     PROTOCOL := "tcp(localhost:3306)"
     DBNAME := "threecode_db"
     CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME
@@ -34,7 +34,7 @@ func open(table_name string) *gorm.DB {
 
 	// マイグレーション(DBに保存されているデータを保持したまま、テーブルの作成やカラムの変更などを行う)
 	// テーブルが無い時は自動生成,テーブル名=部屋名(自動生成した文字列)
-    db.AutoMigrate(&entity.Message{Roomname: table_name})
+    db.AutoMigrate(&entity.Message{})
 
 	// データベースに接続できたことを示す
 	fmt.Println("db connected: ", &db)
@@ -43,10 +43,10 @@ func open(table_name string) *gorm.DB {
 }
 
 //指定されたテーブル名のメッセージを取得．whichで抱負か振り返りかを判断
-func FindAllMessage(which int, table_name string)[]entity.Message{
+func FindAllMessage(which int)[]entity.Message{
 	message := []entity.Message{}
 
-	db := open(table_name)
+	db := open()
 
 	//SQL文
 	//SELECT User,Message,Anonymous FROM table_name WHERE Which=which ORDER BY ID;
@@ -58,8 +58,8 @@ func FindAllMessage(which int, table_name string)[]entity.Message{
 
 
 //抱負,振り返りを追加する
-func Send_Message(registerMessage *entity.Message, table_name string){
-	db := open(table_name)
+func Send_Message(registerMessage *entity.Message){
+	db := open()
 	db.Create(&registerMessage)
 	defer db.Close()
 }
