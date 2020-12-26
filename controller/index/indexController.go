@@ -8,7 +8,8 @@ import (
 	"math/rand"
 	// フォーマットI/O
 	"fmt"
-	// エラー処理
+	// 時刻情報
+	"time"
 )
 
 const (
@@ -19,7 +20,8 @@ const (
 // generateRN: 乱数生成
 func GenerateRN(c *gin.Context) {
 	var letters = []rune("abcdefghijklmnopqrstuwvxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-	
+	rand.Seed(time.Now().UnixNano())
+
 	// 乱数を生成
 	b := make([]rune, 10)
 	for i := range b {

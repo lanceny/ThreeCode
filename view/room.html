@@ -35,8 +35,8 @@
           <section class="comment-section">
             <div class="comment-board">
               <ul>
-                <li v-for="(item, index) in messages" v-bind:key="index">
-                  <p v-text="item.message"></p>
+                <li v-for="(item, index) in aspiration_his" v-bind:key="index">
+                  <p v-text="item.aspiration"></p>
                 </li>
               </ul>
             </div>
@@ -44,12 +44,12 @@
               <textarea
                 class="comment-textarea"
                 type="text"
-                v-model="message"
+                v-model="aspiration"
                 placeholder="メッセージを入力"
-                @keyup.enter="sendMessage"
+                @keyup.enter="sendMessage(0)"
               ></textarea>
               <div class="comment-button">
-                <button class="button" v-on:click="sendMessage">
+                <button class="button" v-on:click="sendMessage(0)">
                   送信する
                 </button>
               </div>
@@ -60,10 +60,10 @@
               <ul>
                 <li
                   class="box"
-                  v-for="(item, index) in messages"
+                  v-for="(item, index) in lookback_his"
                   v-bind:key="index"
                 >
-                  <p v-text="item.message"></p>
+                  <p v-text="item.lookback"></p>
                 </li>
               </ul>
             </div>
@@ -71,12 +71,12 @@
               <textarea
                 class="comment-textarea"
                 type="text"
-                v-model="message"
+                v-model="lookback"
                 placeholder="メッセージを入力"
-                @keyup.enter="sendMessage"
+                @keyup.enter="sendMessage(1)"
               ></textarea>
               <div class="comment-button">
-                <button class="button" v-on:click="sendMessage">
+                <button class="button" v-on:click="sendMessage(1)">
                   送信する
                 </button>
               </div>

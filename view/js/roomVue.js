@@ -3,15 +3,22 @@ const websocketURL =
 // websocketをインスタンス化
 const websocket = new WebSocket(websocketURL);
 
+const Aspiration = 0;
+const Lookback   = 1;
+
 new Vue({
-  // elの要素配下でindexVue.jsが有効になる. 今回はdiv id="app"を指定
+  // elの要素配下でroomVue.jsが有効になる. 今回はdiv id="app"を指定
   el: "#app",
 
   data: function () {
     return {
       currentURL: location.href, // URLを格納
-      message: "", // 入力したメッセージを格納する
-      messages: [], // 送受信したメッセージを格納する
+
+      aspiration: "",
+      aspiration_his: [], // 送受信した抱負の履歴
+
+      lookback: "",
+      lookback_his: [],   // 送受信した反省の履歴
     };
   },
 
@@ -34,15 +41,22 @@ new Vue({
      * テキストフィールドでエンターキーが押された時か送信ボタンが押された時に発生
      */
     // 投稿を送信
-    sendMessage: function () {
-      // 未入力だった場合は終了
-      if (this.message == "") {
-        return;
+    sendMessage: function (flag) {
+      if (flag == Aspiration){
+        if (this.aspiration == ""){
+            return;
+        }
+        websocket.send(this.aspiration, Aspiration)
+        this.pushMessage(this.aspiration, "MyID", Aspiration)
+        this.aspiration = "";
+      }else if (flag == Lookback){
+        if (this.lookback == ""){
+            return;
+        }
+        websocket.send(this.lookback, Lookback)
+        this.pushMessage(this.lookback, "MyID", Lookback)
+        this.lookback = "";
       }
-      // メッセージを送信
-      websocket.send(this.message);
-      // メッセージの初期化
-      this.message = "";
     },
 
     /**
@@ -50,13 +64,21 @@ new Vue({
      * @param {String} message - 追加するメッセージ
      * @param {String} owner - 発言者
      */
-    pushMessage: function (message, owner) {
-      console.log(`message = ${message}, owner = ${owner}`);
-      // メッセージを追加
-      this.messages.push({
-        message: message,
-        owner: owner,
-      });
+    pushMessage: function (message, owner, flag) {
+      console.log(`message = ${message}, owner = ${owner}, flag = ${flag}`);
+      if(flag == Aspiration){
+          this.aspiration_his.push({
+              aspiration: message,
+              owner: owner,
+              flag: flag,
+          })
+      }else if (flag == Lookback){
+          this.lookback_his.push({
+              lookback: message,
+              owner: owner,
+              flag: flag
+          })
+      }
     },
   },
 
