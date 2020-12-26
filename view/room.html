@@ -27,39 +27,58 @@
       <main class="container">
         <div class="heading">
           <h1 class="title">ルーム</h1>
+          <!-- GinがRoom_Nameを埋め込んでHTMLを返してくれる -->
+          <div class="sub-title">RoomId: {{.Room_Name}}</div>
+          <button class="button" v-on:click="CopyURL">ルームURLをコピー</button>
         </div>
         <div class="flex">
           <section class="comment-section">
             <div class="comment-board">
-              <p>プログラミングする</p>
+              <ul>
+                <li v-for="(item, index) in messages" v-bind:key="index">
+                  <p v-text="item.message"></p>
+                </li>
+              </ul>
             </div>
             <div class="comment-box">
               <textarea
                 class="comment-textarea"
                 type="text"
-                name=""
-                v-model=""
-                value=""
+                v-model="message"
+                placeholder="メッセージを入力"
+                @keyup.enter="sendMessage"
               ></textarea>
               <div class="comment-button">
-                <button class="button" v-on:click="">送信する</button>
+                <button class="button" v-on:click="sendMessage">
+                  送信する
+                </button>
               </div>
             </div>
           </section>
           <section class="comment-section">
             <div class="comment-board">
-              <p>プログラミングする</p>
+              <ul>
+                <li
+                  class="box"
+                  v-for="(item, index) in messages"
+                  v-bind:key="index"
+                >
+                  <p v-text="item.message"></p>
+                </li>
+              </ul>
             </div>
             <div class="comment-box">
               <textarea
                 class="comment-textarea"
                 type="text"
-                name=""
-                v-model=""
-                value=""
+                v-model="message"
+                placeholder="メッセージを入力"
+                @keyup.enter="sendMessage"
               ></textarea>
               <div class="comment-button">
-                <button class="button" v-on:click="">送信する</button>
+                <button class="button" v-on:click="sendMessage">
+                  送信する
+                </button>
               </div>
             </div>
           </section>
