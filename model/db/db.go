@@ -34,7 +34,7 @@ func open(table_name string) *gorm.DB {
 
 	// マイグレーション(DBに保存されているデータを保持したまま、テーブルの作成やカラムの変更などを行う)
 	// テーブルが無い時は自動生成,テーブル名=部屋名(自動生成した文字列)
-    db.AutoMigrate(&entity.message{Room_name: table_name})
+    db.AutoMigrate(&entity.Message{Roomname: table_name})
 
 	// データベースに接続できたことを示す
 	fmt.Println("db connected: ", &db)
@@ -43,8 +43,8 @@ func open(table_name string) *gorm.DB {
 }
 
 //指定されたテーブル名のメッセージを取得．whichで抱負か振り返りかを判断
-func FindAllMessage(which int, table_name string)[]entity.message{
-	message := []entity.message{}
+func FindAllMessage(which int, table_name string)[]entity.Message{
+	message := []entity.Message{}
 
 	db := open(table_name)
 
@@ -58,7 +58,7 @@ func FindAllMessage(which int, table_name string)[]entity.message{
 
 
 //抱負,振り返りを追加する
-func Send_Message(registerMessage *entity.message, table_name string){
+func Send_Message(registerMessage *entity.Message, table_name string){
 	db := open(table_name)
 	db.Create(&registerMessage)
 	defer db.Close()

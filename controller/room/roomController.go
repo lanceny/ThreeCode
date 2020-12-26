@@ -2,7 +2,7 @@ package roomcontroller
 
 import (
     // 文字列と基本データ型の変換パッケージ
-    // strconv "strconv"
+    strconv "strconv"
 
     // Gin
     "github.com/gin-gonic/gin"
@@ -44,14 +44,17 @@ func Fetch_AllMessage_Lookback(c *gin.Context) {
 func Send_Message_Aspiration(c *gin.Context){
     UserName := c.PostForm("UserName")
     Message := c.PostForm("Message")
-    Anonymous := c.PostForm("Anonymous")
+    Anonymousstr := c.PostForm("Anonymous")
+    Anonymous, _ := strconv.Atoi(Anonymousstr)
     room_name := c.PostForm("room_name")
+    whichstr := c.PostForm("Aspiration")
+    which, _ := strconv.Atoi(whichstr)
 
-    var room = entity.message{
+    var room = entity.Message{
         User:       UserName,
         Message:    Message,
         Anonymous:  Anonymous,
-        Which:      Aspiration,
+        Which:      which,
     }
 
     db.Send_Message(&room,room_name)
@@ -61,14 +64,17 @@ func Send_Message_Aspiration(c *gin.Context){
 func Send_Message_Lookback(c *gin.Context){
     UserName := c.PostForm("UserName")
     Message := c.PostForm("Message")
-    Anonymous := c.PostForm("Anonymous")
+    Anonymousstr := c.PostForm("Anonymous")
+    Anonymous, _ := strconv.Atoi(Anonymousstr)
     room_name := c.PostForm("room_name")
+    whichstr := c.PostForm("Lookback")
+    which, _ := strconv.Atoi(whichstr)
 
-    var room = entity.message{
+    var room = entity.Message{
         User:       UserName,
         Message:    Message,
         Anonymous:  Anonymous,
-        which:      LookBack,
+        Which:      which,
     }
 
     db.Send_Message(&room,room_name)
