@@ -42,10 +42,11 @@ func serve() {
 		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 	
-	// /(部屋を示す文字列)にリクエストが来たらroom.htmlを返す
+	// (部屋を示す文字列)にリクエストが来たらroom.htmlを返す
+	// :nameのparamを取得しHTMLにRoom_Nameという変数で渡す値を格納しておく
 	ginRouter.GET("room/:name", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "room.html", gin.H{
-			"Room_Name": c.Param("room_name"),
+			"Room_Name": c.Param("name"),
 		})
 	})
 
@@ -58,6 +59,7 @@ func serve() {
 	ginRouter.GET("/generateRN",indexController.GenerateRN)
 
 	// 部屋名(URL)が同じクライアントのみに，送られてきた値を送信する
+	// 部屋名が同じクライアントのみに送りたいので、BroadcastFilterをかけている
 	melodyInstance.HandleMessage(func(s *melody.Session, msg []byte) {
 		melodyInstance.BroadcastFilter(msg, func(q *melody.Session) bool {
 			return q.Request.URL.Path == s.Request.URL.Path
