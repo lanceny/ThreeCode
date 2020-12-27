@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ルーム - ThreeeCode</title>
+    <title>ルーム ｜ ほーふる</title>
     <link rel="icon" type="image/x-icon" href="/view/favicon.svg" />
     <!-- スタイルシート -->
     <link rel="stylesheet" type="text/css" href="/view/css/style.css" />
@@ -25,7 +25,6 @@
   </head>
   <body>
     <div id="app">
-
       <main class="container fade">
         <div class="room-wrapper">
           <div class="room-heading">
@@ -52,7 +51,10 @@
                     v-bind:key="index"
                     class="comment-board__item"
                   >
-                    <p v-text="item.aspiration" v-on:click="doDeleteMessage"></p>
+                    <p
+                      v-text="item.aspiration"
+                      v-on:click="doDeleteMessage"
+                    ></p>
                   </li>
                 </ul>
               </div>
@@ -136,7 +138,7 @@
           </div>
         </div>
       </main>
-      <footer class="footer"><span>©︎ Three Code</span></footer>
+      <footer class="footer"><span>©︎ すりーこーど</span></footer>
       <div id="snackBar" v-text="snackBarMsg"></div>
     </div>
   </body>
