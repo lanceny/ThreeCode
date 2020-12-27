@@ -17,10 +17,10 @@ import (
 )
 
 const (
-    //抱負
+    // Aspiration 抱負
     Aspiration = 0
 
-    //振り返り
+    //LookBack 振り返り
     LookBack = 1
 )
 
@@ -29,7 +29,7 @@ const (
 * データベース問題を解決
 */
 
-// 全ての抱負のメッセージを取得
+// Fetch_AllMessage_Aspiration 全ての抱負のメッセージを取得
 func Fetch_AllMessage_Aspiration(c *gin.Context) {
     roomname := c.Param("roomid")
     resultMessage := db.FindAllMessage(Aspiration, roomname)
@@ -38,7 +38,7 @@ func Fetch_AllMessage_Aspiration(c *gin.Context) {
     c.JSON(200, resultMessage)
 }
 
-// 全ての振り返りのメッセージを取得
+// Fetch_AllMessage_Lookback 全ての振り返りのメッセージを取得
 func Fetch_AllMessage_Lookback(c *gin.Context) {
     roomname := c.Param("roomid")
     resultMessage := db.FindAllMessage(LookBack, roomname)
@@ -47,7 +47,7 @@ func Fetch_AllMessage_Lookback(c *gin.Context) {
     c.JSON(200, resultMessage)
 }
 
-//振り返りの方の抱負の方のメッセージ送信
+//Send_Message_Aspiration 振り返りの方の抱負の方のメッセージ送信
 func Send_Message_Aspiration(c *gin.Context){
     UserName := c.PostForm("UserName")
     Message := c.PostForm("Message")
@@ -70,7 +70,7 @@ func Send_Message_Aspiration(c *gin.Context){
     db.Send_Message(&room, roomname)
 }
 
-//振り返りの方のメッセージ送信
+//Send_Message_Lookback 振り返りの方のメッセージ送信
 func Send_Message_Lookback(c *gin.Context){
     UserName := c.PostForm("UserName")
     Message := c.PostForm("Message")
@@ -94,7 +94,7 @@ func Send_Message_Lookback(c *gin.Context){
     db.Send_Message(&room, roomname)
 }
 
-// UerIDの一致する投稿の取得
+// Fetch_SameID UerIDの一致する投稿の取得
 func Fetch_SameID(c *gin.Context) {
     roomname := c.Param("roomid")
     userid   := c.Param("userid")
@@ -104,7 +104,7 @@ func Fetch_SameID(c *gin.Context) {
     c.JSON(200, resultMessage)
 }
 
-// 指定された投稿をDelete
+// DeleteMessage 指定された投稿をDelete
 func DeleteMessage(c *gin.Context){
     roomname := c.Param("roomid")
     messageIDstr := c.PostForm("ID")
@@ -112,7 +112,7 @@ func DeleteMessage(c *gin.Context){
     db.DeleteMessage(messageID, roomname)
 }
 
-// MessageIDの取得用関数だったけど多分使ってない
+// AskMessageID MessageIDの取得用関数だったけど多分使ってない
 func AskMessageID(c *gin.Context){
     roomname := c.Param("roomid")
     resultMessage := db.FindWholeMessage(roomname)
