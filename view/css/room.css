@@ -21,7 +21,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 60px;
   flex-wrap: wrap;
 }
 
@@ -35,9 +34,17 @@
   padding: 24px 16px;
 }
 
+.comment-section:first-child {
+  margin-right: 60px;
+}
+
 @media screen and (max-width: 760px) {
   .comment-section {
     width: 100%;
+  }
+  .comment-section:first-child {
+    margin-right: 0;
+    margin-bottom: 60px;
   }
 }
 

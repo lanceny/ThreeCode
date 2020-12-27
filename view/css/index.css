@@ -66,12 +66,12 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 40px;
 }
 
 .top-about__steps {
   font-size: 20px;
   max-width: 450px;
+  margin-right: 40px;
 }
 
 .top-about__step {
