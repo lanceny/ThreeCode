@@ -12,8 +12,8 @@ import (
 // DB接続する
 func open(rmnm string) *gorm.DB {
 	DBMS := "mysql"
-    USER := "root"
-    PASS := "root"
+    USER := "threecode"
+    PASS := "3cvol5"
     PROTOCOL := "tcp(localhost:3306)"
     DBNAME := "threecode_db"
     CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME
