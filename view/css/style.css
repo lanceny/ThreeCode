@@ -18,24 +18,93 @@ a {
   text-decoration: none;
 }
 
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
 .container {
-  text-align: center;
-  padding: 0 8px;
-}
-
-.heading {
-  margin: 40px 0;
-}
-
-.title {
-  font-size: 40px;
-  margin-bottom: 24px;
+  padding: 16px;
+  margin: 0 auto;
 }
 
 .button {
-  font-size: 14px;
+  font-size: 16px;
   color: #fff;
   padding: 8px 16px;
-  background-color: blue;
-  border-radius: 16px;
+  background-color: #0288d1;
+  border-radius: 30px;
+  transition-duration: 0.3s;
+}
+
+.button:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.footer {
+  width: 100%;
+  background-color: #333333;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  padding: 24px;
+  margin-top: 32px;
+}
+
+.fade {
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#snackBar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px; /* min-width / 2 */
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+}
+
+#snackBar.show {
+  visibility: visible;
+  animation: snackBarFadeIn 0.5s, snackBarFadeOut 0.5s 2.5s;
+}
+
+@keyframes snackBarFadeIn {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes snackBarFadeOut {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }
