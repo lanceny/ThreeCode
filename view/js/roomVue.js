@@ -24,14 +24,14 @@ new Vue({
       userNameAsp: "匿名", //ユーザ名
       userNameLkb: "匿名",
 
-      anonymousflag: 0,  // 匿名表示するかどうか
+      // anonymousflag: 0,  // 匿名表示するかどうか
 
       userID: "",        // ユーザ固有のID
 
       delfalg: 0,    // 削除モードかどうか
                          // 自分の投稿のみ表示している状態を削除モードとすれば楽そう
 
-      mesid: []     // メッセージID, 削除に必要なのでDBから取得
+      mesid: [],     // メッセージID, 削除に必要なのでDBから取得
 
       snackBarMsg: "",
       isAnonymous: false,
@@ -76,7 +76,13 @@ new Vue({
     sendMessage: function (flag) {
       //axiosに渡すパスの整形
       const params = new URLSearchParams();
-      params.append('Anonymous', this.anonymousflag)
+
+      // 匿名表示かどうか 1なら匿名, 0なら通常
+      if(this.isAnonymous){
+        params.append('Anonymous', 1)
+      }else{
+        params.append('Anonymous', 0)
+      }
       params.append('Roomname', location.pathname.replace('/room/', ''))
       params.append('Userid', this.userID)
       
