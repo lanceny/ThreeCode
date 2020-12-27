@@ -59,6 +59,14 @@
                 </ul>
               </div>
               <div class="comment-box">
+                <div class="comment-box__self-post-button">
+                  <a class="button-green" v-on:click="returnFetch()"
+                    >全て表示</a
+                  >
+                  <a class="button-green" v-on:click="fetchUser()"
+                    >自分の投稿のみ表示</a
+                  >
+                </div>
                 <input
                   class="comment-box__input"
                   type="text"
@@ -105,6 +113,14 @@
                 </ul>
               </div>
               <div class="comment-box">
+                <div class="comment-box__self-post-button">
+                  <a class="button-green" v-on:click="returnFetch()"
+                    >全て表示</a
+                  >
+                  <a class="button-green" v-on:click="fetchUser()"
+                    >自分の投稿のみ表示</a
+                  >
+                </div>
                 <input
                   class="comment-box__input"
                   type="text"
