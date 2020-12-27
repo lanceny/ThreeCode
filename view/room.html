@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ルーム - ThreeeCode</title>
+    <title>ルーム ｜ ほーふる</title>
     <link rel="icon" type="image/x-icon" href="/view/favicon.svg" />
     <!-- スタイルシート -->
     <link rel="stylesheet" type="text/css" href="/view/css/style.css" />
@@ -25,15 +25,14 @@
   </head>
   <body>
     <div id="app">
-
       <main class="container fade">
         <div class="room-wrapper">
           <div class="room-heading">
             <!-- GinがRoom_Nameを埋め込んでHTMLを返してくれる -->
             <h2 class="room-heading__sub-title">ルームID: {{.Room_Name}}</h2>
-            <a class="button" v-on:click="CopyURL">ルームURLをコピー</a>
+            <a class="button" v-on:click="CopyURL">ルームURLを共有</a>
             <div class="room-heading__text">
-              <p>上のボタンを押して、URLを共有しよう！</p>
+              <p>上のボタンを押して、URLをコピーしよう！</p>
               <p>みんなで今年の振り返り・新年の抱負を書き込もう！</p>
               <p>
                 ボードを見ながら、上から誰の反省・抱負かを話し合って当ててみよう！
@@ -52,11 +51,22 @@
                     v-bind:key="index"
                     class="comment-board__item"
                   >
-                    <p v-text="item.aspiration" v-on:click="doDeleteMessage"></p>
+                    <p
+                      v-text="item.aspiration"
+                      v-on:click="doDeleteMessage"
+                    ></p>
                   </li>
                 </ul>
               </div>
               <div class="comment-box">
+                <div class="comment-box__self-post-button">
+                  <a class="button-green" v-on:click="returnFetch()"
+                    >全て表示</a
+                  >
+                  <a class="button-green" v-on:click="fetchUser()"
+                    >自分の投稿のみ表示</a
+                  >
+                </div>
                 <input
                   class="comment-box__input"
                   type="text"
@@ -103,6 +113,14 @@
                 </ul>
               </div>
               <div class="comment-box">
+                <div class="comment-box__self-post-button">
+                  <a class="button-green" v-on:click="returnFetch()"
+                    >全て表示</a
+                  >
+                  <a class="button-green" v-on:click="fetchUser()"
+                    >自分の投稿のみ表示</a
+                  >
+                </div>
                 <input
                   class="comment-box__input"
                   type="text"
@@ -136,7 +154,7 @@
           </div>
         </div>
       </main>
-      <footer class="footer"><span>©︎ Three Code</span></footer>
+      <footer class="footer"><span>©︎ すりーこーど</span></footer>
       <div id="snackBar" v-text="snackBarMsg"></div>
     </div>
   </body>

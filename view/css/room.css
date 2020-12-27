@@ -1,5 +1,5 @@
 .room-wrapper {
-  background: #d8eefe;
+  background: #ebf5ff;
   margin: -60px -16px;
   padding: 60px 16px;
 }
@@ -21,7 +21,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 60px;
   flex-wrap: wrap;
 }
 
@@ -35,9 +34,17 @@
   padding: 24px 16px;
 }
 
+.comment-section:first-child {
+  margin-right: 60px;
+}
+
 @media screen and (max-width: 760px) {
   .comment-section {
     width: 100%;
+  }
+  .comment-section:first-child {
+    margin-right: 0;
+    margin-bottom: 60px;
   }
 }
 
@@ -118,6 +125,13 @@
 
 .comment-box {
   margin-top: 24px;
+}
+
+.comment-box__self-post-button {
+  display: flex;
+  justify-content: flex-end;
+  text-align: center;
+  margin: 12px 0;
 }
 
 .comment-box__input {
