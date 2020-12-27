@@ -103,6 +103,14 @@
   right: 9px;
 }
 
+.comment-delete-mode {
+  background-color: rgb(100, 195, 154);
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  padding: 4px 0;
+}
+
 .comment-board {
   min-height: 300px;
   max-height: 300px;
