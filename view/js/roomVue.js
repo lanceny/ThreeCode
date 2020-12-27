@@ -4,8 +4,8 @@ const websocketURL =
 const websocket = new WebSocket(websocketURL);
 
 // 振り返りと抱負の識別子
-const Aspiration = 0; 
-const Lookback   = 1;
+const Aspiration = 0;
+const Lookback = 1;
 
 new Vue({
   // elの要素配下でroomVue.jsが有効になる. 今回はdiv id="app"を指定
@@ -32,6 +32,9 @@ new Vue({
                          // 自分の投稿のみ表示している状態を削除モードとすれば楽そう
 
       mesid: []     // メッセージID, 削除に必要なのでDBから取得
+
+      snackBarMsg: "",
+      isAnonymous: false,
     };
   },
 
@@ -49,6 +52,16 @@ new Vue({
       textBox.select();
       document.execCommand("copy");
       document.body.removeChild(textBox);
+
+      this.snackBarOpen("コピーしました！");
+    },
+    snackBarOpen(msg) {
+      this.snackBarMsg = msg;
+      const snackBar = document.getElementById("snackBar");
+      snackBar.classList.add("show");
+      setTimeout(function () {
+        snackBar.classList.remove("show");
+      }, 3000);
     },
 
     /**
@@ -82,7 +95,7 @@ new Vue({
         // 自分のと送信して戻ってきたので2つ表示されたのでとりあえずコメントアウト中
         // this.pushMessage(this.aspiration, "MyID", Aspiration)
 
-        // 送ったらフォームをクリア 
+        // 送ったらフォームをクリア
         this.aspiration = "";
 
         // axiosにパスを投げる
@@ -104,7 +117,7 @@ new Vue({
         params.append('Message', this.lookback)
         params.append('Which', Lookback)
         lkb = this.lookback + "," + "MyID" + "," + Lookback;
-        websocket.send(lkb)
+        websocket.send(lkb);
         // this.pushMessage(this.lookback, "MyID", Lookback)
         this.lookback = "";
 
@@ -129,21 +142,21 @@ new Vue({
      */
     pushMessage: function (message, owner, flag) {
       console.log(`message = ${message}, owner = ${owner}, flag = ${flag}`);
-      if(flag == Aspiration){
-          // 履歴リストにpush
-          this.aspiration_his.push({
-              aspiration: message,
-              owner: owner,
-              flag: flag,
-          })
-      }else if (flag == Lookback){
-          this.lookback_his.push({
-              lookback: message,
-              owner: owner,
-              flag: flag
-          })
+      if (flag == Aspiration) {
+        // 履歴リストにpush
+        this.aspiration_his.push({
+          aspiration: message,
+          owner: owner,
+          flag: flag,
+        });
+      } else if (flag == Lookback) {
+        this.lookback_his.push({
+          lookback: message,
+          owner: owner,
+          flag: flag,
+        });
       }
-      console.log("### Successfully pushed")
+      console.log("### Successfully pushed");
     },
     
     /**
@@ -338,13 +351,13 @@ new Vue({
     // websocketイベントハンドラ
     websocket.onmessage = function (event) {
       console.log("### websocket.onmessage()");
-      console.log(event.data)
+      console.log(event.data);
 
       // 戻り値チェック 中身があるなら通常通り
       if (event && event.data) {
         // 受信したメッセージを履歴に追加
         // ,でsplitしてpushMessageに渡せるように
-        var receive = (event.data.split(','));
+        let receive = event.data.split(",");
         self.pushMessage(receive[0], receive[1], receive[2]);
       
       //中身がないなら全体に更新を促す疑似ブロードキャスト
