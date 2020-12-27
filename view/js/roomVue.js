@@ -35,6 +35,8 @@ new Vue({
 
       snackBarMsg: "",
       isAnonymous: false,
+
+      status: "通常"
     };
   },
 
@@ -247,6 +249,7 @@ new Vue({
                 }
                 // これが走ったときだけ投稿削除可能フラグを建てる
                 this.delflag = 1;
+                this.status = "削除モード"
             }
         })
     },
@@ -287,6 +290,7 @@ new Vue({
 
                     // this.fetchUser()
                     websocket.send("")
+                    
                 }
             })
         } else {
@@ -368,7 +372,12 @@ new Vue({
       
       //中身がないなら全体に更新を促す疑似ブロードキャスト
       }else if(event.data == ""){
-        self.returnFetch()
+          console.log(self.delflag)
+        if(self.delflag==0){
+            self.returnFetch()
+        }else if(self.delflag==1){
+            self.fetchUser()
+        }
       }
     };
   },

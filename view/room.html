@@ -53,7 +53,7 @@
                   >
                     <p
                       v-text="item.aspiration"
-                      v-on:click="doDeleteMessage"
+                      v-on:click="doDeleteMessage(item)"
                     ></p>
                   </li>
                 </ul>
@@ -108,7 +108,7 @@
                     v-bind:key="index"
                     class="comment-board__item"
                   >
-                    <p v-text="item.lookback" v-on:click="doDeleteMessage"></p>
+                    <p v-text="item.lookback" v-on:click="doDeleteMessage(item)"></p>
                   </li>
                 </ul>
               </div>
