@@ -37,12 +37,16 @@
               <p>
                 ボードを見ながら、上から誰の反省・抱負かを話し合って当ててみよう！
               </p>
+              <p>💡自分の投稿のみ表示を押すと、投稿を押して削除ができます</p>
             </div>
           </div>
           <div class="flex">
             <section class="comment-section">
               <div class="comment-header">
                 <h3 class="comment-header__title">今年の振り返り</h3>
+              </div>
+              <div v-if="status" class="comment-delete-mode">
+                <h4>削除モード</h4>
               </div>
               <div class="comment-board">
                 <ul class="comment-board__list">
@@ -101,6 +105,9 @@
               <div class="comment-header">
                 <h3 class="comment-header__title">新年の抱負</h3>
               </div>
+              <div v-if="status" class="comment-delete-mode">
+                <h4>削除モード</h4>
+              </div>
               <div class="comment-board">
                 <ul class="comment-board__list">
                   <li
@@ -108,7 +115,10 @@
                     v-bind:key="index"
                     class="comment-board__item"
                   >
-                    <p v-text="item.lookback" v-on:click="doDeleteMessage(item)"></p>
+                    <p
+                      v-text="item.lookback"
+                      v-on:click="doDeleteMessage(item)"
+                    ></p>
                   </li>
                 </ul>
               </div>
