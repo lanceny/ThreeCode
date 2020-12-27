@@ -25,6 +25,7 @@
   </head>
   <body>
     <div id="app">
+
       <main class="container fade">
         <div class="room-wrapper">
           <div class="room-heading">
@@ -51,7 +52,7 @@
                     v-bind:key="index"
                     class="comment-board__item"
                   >
-                    <p v-text="item.aspiration"></p>
+                    <p v-text="item.aspiration" v-on:click="doDeleteMessage"></p>
                   </li>
                 </ul>
               </div>
@@ -96,7 +97,7 @@
                     v-bind:key="index"
                     class="comment-board__item"
                   >
-                    <p v-text="item.lookback"></p>
+                    <p v-text="item.lookback" v-on:click="doDeleteMessage"></p>
                   </li>
                 </ul>
               </div>
